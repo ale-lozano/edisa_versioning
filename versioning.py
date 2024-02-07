@@ -6,6 +6,8 @@ import requests
 repository = os.environ["GITHUB_REPOSITORY"]
 pull_request_number = os.environ["GITHUB_REF"].split("/")[-1]
 
+print("HELLO WORLD")
+
 # Construct the URL to fetch pull request information using the GitHub API
 url = f"https://api.github.com/\
         repos/{repository}/pulls/{pull_request_number}/commits"
