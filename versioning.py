@@ -5,13 +5,12 @@ import requests
 
 # Get the necessary information from the GitHub Actions environment
 repository = os.environ["GITHUB_REPOSITORY"]
-pull_request_number = os.environ["GITHUB_REF"].split("/")[-1]
+pull_request_number = os.environ["PR_NUMBER"].split("/")[-1]
 
 print("HELLO WORLD")
 
 # Construct the URL to fetch pull request information using the GitHub API
-url = f"https://api.github.com/\
-        repos/{repository}/pulls/{pull_request_number}/commits"
+url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}/commits"
 
 
 # Add any necessary authentication headers if your repository requires them

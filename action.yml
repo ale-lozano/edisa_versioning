@@ -1,5 +1,12 @@
 name: "Edisa Versioning"
 description: "Automate versioning"
+inputs:
+  GITHUB_TOKEN:
+    description: "The github secret"
+    required: true
+  PR_NUMBER:
+    description: "The pr number"
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"
