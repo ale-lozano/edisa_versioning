@@ -6,6 +6,8 @@ RUN apt-get update && \
     apt-get install -y git && \
     rm -rf /var/lib/apt/lists/*
 
+RUN git config --global safe.directory '*'
+
 # Install any necessary dependencies
 RUN pip install requests
 # Set the entry point to run the Python script
