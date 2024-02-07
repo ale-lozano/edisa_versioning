@@ -15,7 +15,7 @@ url = f"https://api.github.com/\
 # Add any necessary authentication headers if your repository requires them
 headers = {
     "Accept": "application/vnd.github.v3+json",
-    # "Authorization": f'token {os.environ["GITHUB_TOKEN"]}',
+    "Authorization": f'token {os.environ["GITHUB_TOKEN"]}',
 }
 
 # Send a GET request to retrieve the list of commits for the pull request
