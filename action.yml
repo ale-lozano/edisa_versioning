@@ -9,6 +9,7 @@ inputs:
     required: true
 runs:
   using: "composite"
+  shell: "bash"
   steps:
     - name: Checkout repository
       run: actions/checkout@v2
