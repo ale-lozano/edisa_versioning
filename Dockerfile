@@ -7,6 +7,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 RUN git config --global safe.directory '*'
+RUN git config --global --add safe.directory /github/workspace
 
 # Install any necessary dependencies
 RUN pip install requests
