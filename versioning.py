@@ -1,4 +1,5 @@
 import os
+import sys
 
 import requests
 
@@ -19,6 +20,9 @@ headers = {
     "Authorization": f'Bearer {os.environ["GITHUB_TOKEN"]}',
 }
 
+print(url)
+print(headers)
+
 # Send a GET request to retrieve the list of commits for the pull request
 response = requests.get(url, headers=headers)
 
@@ -30,3 +34,4 @@ if response.status_code == 200:
         print(commit["sha"], commit["commit"]["message"])
 else:
     print(f"Failed to retrieve commits: {response.status_code}")
+    sys.exit(1)
