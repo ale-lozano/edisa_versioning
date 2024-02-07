@@ -1,0 +1,5 @@
+name: "Edisa Versioning"
+description: "Automate versioning"
+runs:
+  using: "docker"
+  image: "Dockerfile"
