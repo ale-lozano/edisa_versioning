@@ -2,10 +2,10 @@ import os
 import subprocess
 import sys
 
-
 import requests
 
 # Get the necessary information from the GitHub Actions environment
+
 
 repository = os.environ["GITHUB_REPOSITORY"]
 pull_request_number = os.environ["PR_NUMBER"].split("/")[-1]
@@ -14,6 +14,7 @@ pull_request_number = os.environ["PR_NUMBER"].split("/")[-1]
 url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}"
 
 # Add any necessary authentication headers if your repository requires them
+
 headers = {
     "Accept": "application/vnd.github.v3+json",
     "Authorization": f'Bearer {os.environ["GITHUB_TOKEN"]}',
@@ -26,7 +27,6 @@ response = requests.get(url, headers=headers)
 if response.status_code == 200:
     pull_request_info = response.json()
     source_branch = pull_request_info["head"]["ref"]
-
     # Configure Git user details
     subprocess.run(
         ["git", "config", "--global", "user.email", "actions@github.com"]
@@ -34,10 +34,22 @@ if response.status_code == 200:
     subprocess.run(
         ["git", "config", "--global", "user.name", "GitHub Actions"]
     )
+    subprocess.run(
+        [
+            "git",
+            "config",
+            "--global",
+            "--add",
+            "safe.directory",
+            "/home/runner/work/test_actions/test_actions",
+        ]
+    )
 
     # Construct the URL to fetch pull request commits using the GitHub API
+
     commits_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}/commits"
     # Send a GET request to retrieve the list of commits for the pull request
+
     response = requests.get(commits_url, headers=headers)
 
     if response.status_code == 200:
@@ -47,6 +59,7 @@ if response.status_code == 200:
         # Process the list of commits
         for commit in commits:
             sha = commit["sha"]
+
             message = commit["commit"]["message"]
             changelog.append(f"{sha[:7]}: {message}")
             # If the commit message contains 'BREAKING CHANGE', increment the major version
