@@ -1,12 +1,33 @@
-name: "Edisa Versioning"
-description: "Automate versioning"
+name: "Create and Commit File"
+description: "Runs a Python script to create a file and commit it to the repository."
 inputs:
   GITHUB_TOKEN:
-    description: "The github secret"
+    description: "The path to the file to be created."
     required: true
   PR_NUMBER:
-    description: "The pr number"
+    description: "The content to be written into the file."
     required: true
 runs:
-  using: "docker"
-  image: "Dockerfile"
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      run: actions/checkout@v2
+
+    - name: Set up Python environment
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.x"
+
+    - name: Install requests library
+      run: python -m pip install requests
+
+    - name: Run Python script
+      run: python ${{ github.action_path }}/scripts/main.py "${{ inputs.file-path }}" "${{ inputs.content }}"
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add "${{ inputs.file-path }}"
+        git commit -m "Add new file via GitHub Action"
+        git push
