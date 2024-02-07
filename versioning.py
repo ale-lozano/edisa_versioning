@@ -1,9 +1,12 @@
 import os
+import subprocess
 import sys
+
 
 import requests
 
 # Get the necessary information from the GitHub Actions environment
+
 repository = os.environ["GITHUB_REPOSITORY"]
 pull_request_number = os.environ["PR_NUMBER"].split("/")[-1]
 
@@ -23,6 +26,14 @@ response = requests.get(url, headers=headers)
 if response.status_code == 200:
     pull_request_info = response.json()
     source_branch = pull_request_info["head"]["ref"]
+
+    # Configure Git user details
+    subprocess.run(
+        ["git", "config", "--global", "user.email", "actions@github.com"]
+    )
+    subprocess.run(
+        ["git", "config", "--global", "user.name", "GitHub Actions"]
+    )
 
     # Construct the URL to fetch pull request commits using the GitHub API
     commits_url = f"https://api.github.com/repos/{repository}/pulls/{pull_request_number}/commits"
@@ -64,10 +75,10 @@ if response.status_code == 200:
                 changelog_file.write(f"- {item}\n")
 
         # Commit and push the changelog file to the source branch
-        os.system(f"git checkout {source_branch}")
-        os.system("git add CHANGELOG.md")
-        os.system("git commit -m 'Update changelog'")
-        os.system(f"git push origin {source_branch}")
+        subprocess.run(["git", "checkout", source_branch])
+        subprocess.run(["git", "add", "CHANGELOG.md"])
+        subprocess.run(["git", "commit", "-m", "'Update changelog'"])
+        subprocess.run(["git", "push", "origin", source_branch])
     else:
         print(f"Failed to retrieve commits: {response.status_code}")
         sys.exit(1)
