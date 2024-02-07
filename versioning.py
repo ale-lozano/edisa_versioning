@@ -12,10 +12,11 @@ print("HELLO WORLD")
 url = f"https://api.github.com/\
         repos/{repository}/pulls/{pull_request_number}/commits"
 
+
 # Add any necessary authentication headers if your repository requires them
 headers = {
     "Accept": "application/vnd.github.v3+json",
-    "Authorization": f'token {os.environ["GITHUB_TOKEN"]}',
+    "Authorization": f'Bearer {os.environ["GITHUB_TOKEN"]}',
 }
 
 # Send a GET request to retrieve the list of commits for the pull request
